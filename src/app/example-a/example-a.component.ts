@@ -1,29 +1,21 @@
-import { AfterViewInit, ApplicationRef, Component, createComponent, Injector, ViewContainerRef } from '@angular/core';
+import { ApplicationRef, Component, createComponent, Injector } from '@angular/core';
 import { ChildComponent } from './child/child.component';
 
 @Component({
-    standalone: true,
     selector: 'app-example-a',
     templateUrl: './example-a.component.html',
-    styleUrls: [ './example-a.component.scss' ],
-    imports: [ ChildComponent ]
+    styleUrls: [ './example-a.component.scss' ]
 })
-export class ExampleAComponent implements AfterViewInit {
-    public constructor(private viewContainerRef: ViewContainerRef,
-                       private readonly injector: Injector,
+export class ExampleAComponent {
+    public constructor(private readonly injector: Injector,
                        private readonly applicationRef: ApplicationRef) {
-    }
-
-    public ngAfterViewInit() {
-        const host = document.getElementById('foo');
-        console.log(host);
+        const host = document.querySelector('body')!;
+        const child = document.createElement('div');
+        host.append(child);
         const componentRef = createComponent(ChildComponent, {
-            // @ts-ignore
-            host,
+            hostElement: child,
             environmentInjector: this.applicationRef.injector
         });
-        console.log(componentRef);
-        console.log(this.applicationRef);
         this.applicationRef.attachView(componentRef.hostView);
     }
 }
