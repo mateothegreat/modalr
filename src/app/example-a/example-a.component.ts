@@ -1,5 +1,4 @@
-import { ApplicationRef, Component, createComponent, Injector, ViewContainerRef } from '@angular/core';
-import { bootstrapApplication } from '@angular/platform-browser';
+import { AfterViewInit, ApplicationRef, Component, createComponent, Injector, ViewContainerRef } from '@angular/core';
 import { ChildComponent } from './child/child.component';
 
 @Component({
@@ -9,23 +8,22 @@ import { ChildComponent } from './child/child.component';
     styleUrls: [ './example-a.component.scss' ],
     imports: [ ChildComponent ]
 })
-export class ExampleAComponent {
+export class ExampleAComponent implements AfterViewInit {
     public constructor(private viewContainerRef: ViewContainerRef,
                        private readonly injector: Injector,
                        private readonly applicationRef: ApplicationRef) {
-        const host = document.getElementById('body');
+    }
 
-        bootstrapApplication(ExampleAComponent).then((ref) => {
-            //
-            // recursive loop here
-            //
-            console.log(ref);
-            const componentRef = createComponent(ChildComponent, {
-                // @ts-ignore
-                host,
-                environmentInjector: applicationRef.injector
-            });
-            // applicationRef.attachView(componentRef.hostView);
+    public ngAfterViewInit() {
+        const host = document.getElementById('foo');
+        console.log(host);
+        const componentRef = createComponent(ChildComponent, {
+            // @ts-ignore
+            host,
+            environmentInjector: this.applicationRef.injector
         });
+        console.log(componentRef);
+        console.log(this.applicationRef);
+        this.applicationRef.attachView(componentRef.hostView);
     }
 }
