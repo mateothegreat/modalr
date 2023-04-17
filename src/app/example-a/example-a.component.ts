@@ -15,7 +15,7 @@ export class ExampleAComponent {
                        private readonly applicationRef: ApplicationRef) {
         const host = document.getElementById('body');
 
-        bootstrapApplication(ChildComponent).then((ref) => {
+        bootstrapApplication(ExampleAComponent).then((ref) => {
             //
             // recursive loop here
             //
@@ -25,7 +25,7 @@ export class ExampleAComponent {
                 host,
                 environmentInjector: applicationRef.injector
             });
-            applicationRef.attachView(componentRef.hostView);
+            // applicationRef.attachView(componentRef.hostView);
         });
     }
 }
