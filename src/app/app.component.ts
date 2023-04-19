@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ModalrService } from '../../projects/lib/src/lib/modalr.service';
+import { ChildComponent } from './example-a/child/child.component';
 
 @Component({
     selector: 'app-root',
@@ -6,5 +8,16 @@ import { Component } from '@angular/core';
     styleUrls: [ './app.component.scss' ]
 })
 export class AppComponent {
-    title = 'modalr';
+    public constructor(private readonly modalrService: ModalrService) {
+        const instance = this.modalrService.open({
+            name: 'child',
+            component: ChildComponent
+        });
+
+        console.log(instance);
+
+        setTimeout(() => {
+            this.modalrService.close('child');
+        }, 2000);
+    }
 }
